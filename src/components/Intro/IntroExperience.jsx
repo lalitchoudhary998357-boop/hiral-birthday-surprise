@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUp } from 'lucide-react';
-import CanvasBlossomTree from './CanvasBlossomTree';
-import './IntroOverlay.css'; // Import the custom typography styles
+import HeartTree from './HeartTree';
+import './IntroOverlay.css';
 
 export default function IntroExperience({ 
   onComplete, 
@@ -10,15 +10,7 @@ export default function IntroExperience({
   const [phase, setPhase] = useState('heart');
 
   return (
-    <div className="fixed inset-0 overflow-hidden z-50 flex items-center justify-center bg-[#12060c]">
-      {/* Vignette Overlay matching the requested design */}
-      <div 
-        className="absolute inset-0 z-[2] pointer-events-none mix-blend-multiply"
-        style={{
-          background: 'radial-gradient(125% 96% at 50% 42%,transparent 55%,rgba(70,20,34,.12) 84%,rgba(48,14,24,.26) 100%)'
-        }}
-      ></div>
-
+    <div className="fixed inset-0 overflow-hidden z-50 flex items-center justify-center bg-gradient-to-br from-[#fca5a5] via-[#fbcfe8] to-[#fed7aa]">
       <AnimatePresence mode="wait">
         {(phase === 'heart' || phase === 'burst') && (
           <HeartDragScene key="heart-scene" phase={phase} onTrigger={() => setPhase('burst')} onBurstComplete={() => setPhase('tree')} />
@@ -32,11 +24,41 @@ export default function IntroExperience({
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
           >
-            {/* The 2D Procedural Canvas Blossom Tree */}
-            <CanvasBlossomTree phase={phase === 'tree' ? 'growing' : phase} onAnimationComplete={setPhase} />
+            {/* The 3D-like Heart Tree */}
+            <div className="absolute inset-0 flex items-end justify-center pb-[5vh] z-10 pointer-events-none">
+              <HeartTree phase={phase === 'tree' ? 'growing' : phase} onAnimationComplete={setPhase} />
+            </div>
+
+            {/* Falling petals effect using Framer Motion (for extra depth) */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
+              {Array.from({ length: 15 }).map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute bg-white/40 rounded-full blur-[1px]"
+                  style={{
+                    width: Math.random() * 8 + 4 + 'px',
+                    height: Math.random() * 8 + 4 + 'px',
+                    left: Math.random() * 100 + '%',
+                    top: -20
+                  }}
+                  animate={{
+                    y: ['0vh', '100vh'],
+                    x: [0, Math.random() * 100 - 50, Math.random() * 100 - 50],
+                    rotate: [0, Math.random() * 360],
+                    opacity: [0, Math.random() * 0.8 + 0.2, 0]
+                  }}
+                  transition={{
+                    duration: Math.random() * 10 + 5,
+                    repeat: Infinity,
+                    delay: Math.random() * 10,
+                    ease: 'linear'
+                  }}
+                />
+              ))}
+            </div>
 
             {/* Custom overlay mimicking the Blossom Tree layout */}
-            <div className="absolute left-[7%] bottom-[13%] max-w-[min(84%,440px)] z-20 pointer-events-none text-left flex flex-col items-start">
+            <div className="om-bday-tree-wish is-in absolute left-[7%] bottom-[13%] max-w-[min(84%,440px)] z-20 pointer-events-none text-left flex flex-col items-start">
               <motion.p 
                 className="om-bday-tree-eyebrow"
                 initial={{ opacity: 0, y: 12, filter: 'blur(5px)' }}
