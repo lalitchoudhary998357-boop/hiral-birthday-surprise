@@ -3,7 +3,21 @@ import IntroExperience from '../components/Intro/IntroExperience';
 import BirthdayExperience from './BirthdayExperience';
 
 export default function Home() {
+  const [siteStarted, setSiteStarted] = useState(false);
   const [introFinished, setIntroFinished] = useState(false);
+
+  // Global Audio instance
+  const [bgMusic] = useState(() => {
+    const audio = new Audio('/tenu-sang-rakhna.mp3');
+    audio.volume = 0.6;
+    audio.loop = true;
+    return audio;
+  });
+
+  const startExperience = () => {
+    bgMusic.play().catch(e => console.log('Audio error:', e));
+    setSiteStarted(true);
+  };
 
   // Hardcoded data for Hiral from Lalit
   const hiralData = {
@@ -29,6 +43,21 @@ export default function Home() {
     letter: `Happy Birthday Hiral 🥹❤️\n\nYou’re not just my best friend, you’re that one person who somehow became family without sharing the same blood. From random conversations to stupid arguments, from laughing over the most useless things to being there when things weren't okay — I’m genuinely grateful for every moment with you. 🫶🏻\n\nI hope this new year of your life brings you endless happiness, peace, success, and all the things you've been wishing for. ✨ You deserve people who value you, moments that make you smile for no reason, and a life that feels as beautiful as you are.\n\nStay the same crazy, caring and amazing person you are. ❤️\n\nHappy Birthday once again, meri behen! 🎂🫂\n\nKeep smiling, keep shining, and never forget — I'm always just one call away. ❤️✨`
   };
 
+  if (!siteStarted) {
+    return (
+      <div 
+        className="fixed inset-0 bg-[#fca5a5] flex items-center justify-center cursor-pointer z-[100]"
+        onClick={startExperience}
+      >
+        <div className="text-center bg-white/20 p-8 rounded-3xl backdrop-blur-sm border border-white/30 shadow-2xl hover:scale-105 transition-transform">
+          <h1 className="text-4xl text-white font-bold mb-6 drop-shadow-md">A Surprise for Hiral</h1>
+          <div className="text-6xl mb-6 animate-bounce">🎁</div>
+          <p className="text-white/90 font-medium text-xl animate-pulse">Tap to open</p>
+        </div>
+      </div>
+    );
+  }
+
   if (introFinished) {
     // Show the actual birthday experience directly!
     return <BirthdayExperience data={hiralData} isPreview={false} />;
@@ -37,8 +66,6 @@ export default function Home() {
   return (
     <IntroExperience 
       onComplete={() => setIntroFinished(true)} 
-      messageText={`Happy Birthday, ${hiralData.recipientName} ✨`}
-      buttonText="Open Surprise 🎁"
     />
   );
 }

@@ -9,37 +9,6 @@ export default function IntroExperience({
 }) {
   const [phase, setPhase] = useState('heart');
 
-  const [audio] = useState(() => {
-    const a = new Audio('/tenu-sang-rakhna.mp3');
-    a.volume = 0.6;
-    a.preload = 'auto';
-    return a;
-  });
-
-  useEffect(() => {
-    if (phase === 'burst') {
-      audio.play().catch(err => console.log("Audio playback failed:", err));
-    }
-  }, [phase, audio]);
-
-  // Unlock audio context on very first interaction to fix mobile autoplay issues
-  useEffect(() => {
-    const unlockAudio = () => {
-      audio.play().then(() => {
-        audio.pause();
-        audio.currentTime = 0;
-      }).catch(() => {});
-      document.removeEventListener('click', unlockAudio);
-      document.removeEventListener('touchstart', unlockAudio);
-    };
-    document.addEventListener('click', unlockAudio);
-    document.addEventListener('touchstart', unlockAudio);
-    return () => {
-      document.removeEventListener('click', unlockAudio);
-      document.removeEventListener('touchstart', unlockAudio);
-    };
-  }, [audio]);
-
   return (
     <div className="fixed inset-0 overflow-hidden z-50 flex items-center justify-center bg-gradient-to-br from-[#fca5a5] via-[#fbcfe8] to-[#fed7aa]">
       <AnimatePresence mode="wait">
