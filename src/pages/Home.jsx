@@ -23,7 +23,8 @@ export default function Home() {
       { image_url: '/photos/photo2.jpg', caption: '' },
       { image_url: '/photos/photo3.jpg', caption: '' },
       { image_url: '/photos/photo4.jpg', caption: '' },
-      { image_url: '/photos/photo5.png', caption: '' }
+      { image_url: '/photos/photo5.png', caption: '' },
+      { image_url: '/photos/photo6.jpg', caption: '' }
     ],
     letter: `Happy Birthday Hiral 🥹❤️\n\nYou’re not just my best friend, you’re that one person who somehow became family without sharing the same blood. From random conversations to stupid arguments, from laughing over the most useless things to being there when things weren't okay — I’m genuinely grateful for every moment with you. 🫶🏻\n\nI hope this new year of your life brings you endless happiness, peace, success, and all the things you've been wishing for. ✨ You deserve people who value you, moments that make you smile for no reason, and a life that feels as beautiful as you are.\n\nStay the same crazy, caring and amazing person you are. ❤️\n\nHappy Birthday once again, meri behen! 🎂🫂\n\nKeep smiling, keep shining, and never forget — I'm always just one call away. ❤️✨`
   };

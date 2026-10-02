@@ -9,6 +9,14 @@ export default function IntroExperience({
 }) {
   const [phase, setPhase] = useState('heart');
 
+  useEffect(() => {
+    if (phase === 'burst') {
+      const audio = new Audio('/tenu-sang-rakhna.mp3');
+      audio.volume = 0.6; // slightly lower volume so it's pleasant
+      audio.play().catch(err => console.log("Audio playback failed (usually requires user interaction first):", err));
+    }
+  }, [phase]);
+
   return (
     <div className="fixed inset-0 overflow-hidden z-50 flex items-center justify-center bg-gradient-to-br from-[#fca5a5] via-[#fbcfe8] to-[#fed7aa]">
       <AnimatePresence mode="wait">
