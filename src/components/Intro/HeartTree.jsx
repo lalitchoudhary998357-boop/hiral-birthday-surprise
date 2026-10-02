@@ -43,12 +43,12 @@ export default function HeartTree({ phase, onAnimationComplete }) {
     ];
 
     const colors = [
-      { id: 'pink-soft', weight: 35 },
-      { id: 'pink-rose', weight: 25 },
-      { id: 'pink-blush', weight: 15 },
-      { id: 'yellow-warm', weight: 12 },
-      { id: 'yellow-gold', weight: 5 },
-      { id: 'peach-soft', weight: 8 }
+      { id: 'pink-1', weight: 20 },
+      { id: 'pink-2', weight: 20 },
+      { id: 'pink-3', weight: 20 },
+      { id: 'pink-4', weight: 15 },
+      { id: 'pink-5', weight: 10 },
+      { id: 'pink-6', weight: 15 }
     ];
 
     const pickColor = () => {
@@ -57,7 +57,7 @@ export default function HeartTree({ phase, onAnimationComplete }) {
         if (r < c.weight) return c.id;
         r -= c.weight;
       }
-      return 'pink-soft';
+      return 'pink-1';
     };
 
     // Responsive leaf count: more on desktop, fewer on mobile
@@ -149,40 +149,41 @@ export default function HeartTree({ phase, onAnimationComplete }) {
       <svg viewBox="0 0 800 1000" className="w-full h-full drop-shadow-2xl overflow-visible">
         {/* DEFINITIONS FOR GLOSSY HEARTS */}
         <defs>
-          {/* Gradients */}
-          <linearGradient id="pink-soft" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FDF2F8" />
-            <stop offset="100%" stopColor="#F9A8D4" />
+          {/* Vibrant Gradients from User's Canvas Code */}
+          <linearGradient id="pink-1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ff80aa" />
+            <stop offset="100%" stopColor="#ffb3c6" />
           </linearGradient>
-          <linearGradient id="pink-rose" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FCE7F3" />
-            <stop offset="100%" stopColor="#F472B6" />
+          <linearGradient id="pink-2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#f4577f" />
+            <stop offset="100%" stopColor="#f4a0b0" />
           </linearGradient>
-          <linearGradient id="pink-blush" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FFE4E6" />
-            <stop offset="100%" stopColor="#FDA4AF" />
+          <linearGradient id="pink-3" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#e23b67" />
+            <stop offset="100%" stopColor="#f9d0d8" />
           </linearGradient>
-          <linearGradient id="yellow-warm" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FEF9C3" />
-            <stop offset="100%" stopColor="#FDE047" />
+          <linearGradient id="pink-4" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ffd6e0" />
+            <stop offset="100%" stopColor="#ffd0e0" />
           </linearGradient>
-          <linearGradient id="yellow-gold" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FEF3C7" />
-            <stop offset="100%" stopColor="#FCD34D" />
+          <linearGradient id="pink-5" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ffd9c4" />
+            <stop offset="100%" stopColor="#fcd9c4" />
           </linearGradient>
-          <linearGradient id="peach-soft" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FFEDD5" />
-            <stop offset="100%" stopColor="#FB923C" />
+          <linearGradient id="pink-6" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ffe1ec" />
+            <stop offset="100%" stopColor="#e84d9a" />
           </linearGradient>
 
-          {/* Base Glossy Heart Geometry (20x20) */}
+          {/* Plump Emoji-style Heart (24x24 viewport base) */}
           <g id="glossy-heart">
             {/* Shadow */}
-            <path d="M10 18 C 10 18, 2 11, 2 6 C 2 3, 6 1.5, 10 5.5 C 14 1.5, 18 3, 18 6 C 18 11, 10 18, 10 18 Z" fill="rgba(0,0,0,0.1)" transform="translate(0, 1.5)" />
-            {/* Main Body (Color applied via CSS/fill in <use>) */}
-            <path d="M10 18 C 10 18, 2 11, 2 6 C 2 3, 6 1.5, 10 5.5 C 14 1.5, 18 3, 18 6 C 18 11, 10 18, 10 18 Z" />
-            {/* Glossy Highlight */}
-            <path d="M10 5.5 C 6 1.5, 2 3, 2 6 C 2 8, 4.5 11.5, 7.5 14 C 7.5 14, 3 8.5, 6.5 4 C 7.5 2.5, 9 3.5, 10 5.5 Z" fill="white" opacity="0.5" />
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="rgba(110,16,46,0.3)" transform="translate(0, 2)" />
+            {/* Main Body */}
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+            {/* Glossy Highlight (like the canvas ellipse) */}
+            <ellipse cx="6.5" cy="6.5" rx="2.5" ry="4.5" fill="white" opacity="0.65" transform="rotate(-35 6.5 6.5)" />
+            <ellipse cx="17.5" cy="6.5" rx="1.5" ry="3" fill="white" opacity="0.3" transform="rotate(35 17.5 6.5)" />
           </g>
         </defs>
 
