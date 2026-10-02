@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, ArrowRight, Heart } from 'lucide-react';
 
@@ -108,41 +108,74 @@ function SceneCake({ data, next }) {
 function SceneBalloons({ data, next }) {
   const [popped, setPopped] = useState([]);
   
-  const popBalloon = (index) => {
-    if (!popped.includes(index)) setPopped([...popped, index]);
-  };
+function SceneMemories({ data, next }) {
+  const [fullScreenIndex, setFullScreenIndex] = useState(0);
 
-  const allPopped = popped.length === data.balloons.length;
+  if (!data.memories || data.memories.length === 0) {
+    return (
+      <div className="text-center">
+        <p className="mb-6 text-xl">No photos this time, but lots of love! ❤️</p>
+        <button onClick={next} className="bg-white text-deep-burgundy px-8 py-3 rounded-full font-bold">Next</button>
+      </div>
+    );
+  }
+
+  const showCollage = fullScreenIndex >= data.memories.length;
+
+  if (!showCollage) {
+    const mem = data.memories[fullScreenIndex];
+    return (
+      <motion.div 
+        key={s-${fullScreenIndex}}
+        className="fixed inset-0 z-[100] bg-black/95 flex flex-col items-center justify-center p-6 cursor-pointer"
+        initial={{ opacity: 0, scale: 0.95 }} 
+        animate={{ opacity: 1, scale: 1 }} 
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.4 }}
+        onClick={() => setFullScreenIndex(prev => prev + 1)}
+      >
+        <div className="max-w-md w-full bg-white p-3 pb-8 md:pb-10 rounded shadow-2xl relative">
+          <div className="aspect-[3/4] bg-gray-100 rounded-sm overflow-hidden border border-gray-100">
+            <img src={mem.image_url} alt="Memory" className="w-full h-full object-cover" />
+          </div>
+          {mem.caption && <p className="text-deep-burgundy font-medium mt-4 text-center hand-drawn-font text-xl">{mem.caption}</p>}
+        </div>
+        <p className="text-white/60 mt-8 text-sm md:text-base animate-pulse font-medium">Tap anywhere to see next</p>
+      </motion.div>
+    );
+  }
+
+  // Pre-defined rotations for that scattered "polaroid on a desk" look
+  const rotations = ['-rotate-3', 'rotate-2', '-rotate-6', 'rotate-6', '-rotate-1', 'rotate-3'];
 
   return (
-    <motion.div className="w-full max-w-md" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-peach mb-2">Pop the balloons 🎈</h2>
-        <p className="text-white/70">Each one hides a reason you're loved</p>
+    <motion.div className="w-full text-center max-w-4xl mx-auto" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, x: -100 }}>
+      <h2 className="text-3xl font-bold text-peach mb-2">Memory Lane</h2>
+      <p className="text-white/70 mb-8">Some beautiful moments together ✨</p>
+      
+      <div className="flex flex-wrap justify-center items-center gap-4 md:gap-8 pb-12 px-2">
+        {data.memories.map((mem, i) => (
+          <motion.div 
+            key={i} 
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ delay: i * 0.15 }}
+            className={w-36 md:w-48 bg-white p-2 md:p-3 pb-6 md:pb-8 rounded shadow-xl hover:scale-110 hover:z-20 transition-all cursor-pointer relative z-10 transform }
+          >
+            <div className="aspect-square bg-gray-100 rounded-sm overflow-hidden border border-gray-100">
+              <img src={mem.image_url} alt="Memory" className="w-full h-full object-cover" />
+            </div>
+            {mem.caption && <p className="text-deep-burgundy font-medium mt-3 text-sm md:text-base hand-drawn-font">{mem.caption}</p>}
+          </motion.div>
+        ))}
       </div>
 
-      <div className="space-y-4">
-        {data.balloons.map((msg, i) => (
-          <div key={i} className="relative min-h-[5rem] flex items-center justify-center py-2">
-            <AnimatePresence>
-              {!popped.includes(i) ? (
-                <motion.div 
-                  exit={{ opacity: 0, scale: 1.5 }}
-                  onClick={() => popBalloon(i)}
-                  className="absolute cursor-pointer text-5xl hover:scale-110 transition-transform"
-                >
-                  🎈
-                </motion.div>
-              ) : (
-                <motion.div 
-                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                  className="w-full bg-white/10 border border-peach/30 p-4 rounded-xl text-center backdrop-blur-md"
-                >
-                  <p className="text-lg font-medium text-warm-cream">{msg}</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+      <button onClick={next} className="bg-white text-deep-burgundy px-8 py-3 rounded-full font-bold inline-flex items-center gap-2 relative z-30 shadow-lg hover:scale-105 transition-transform">
+        Keep going <ArrowRight size={18} />
+      </button>
+    </motion.div>
+  );
+}
         ))}
       </div>
 
