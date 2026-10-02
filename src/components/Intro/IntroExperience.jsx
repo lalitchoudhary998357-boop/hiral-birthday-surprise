@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence, useAnimation } from 'framer-motion';
-import { Sparkles, ArrowUp } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowUp } from 'lucide-react';
 import HeartTree from './HeartTree';
+import './IntroOverlay.css'; // Import the custom typography styles
 
 export default function IntroExperience({ 
   onComplete, 
-  messageText = "Some moments are meant to be remembered forever.", 
-  buttonText = "Let's make a little magic" 
 }) {
-  // Phases: 'heart' -> 'burst' -> 'tree' (tree draws and grows leaves) -> 'falling' -> 'message' -> 'done'
   const [phase, setPhase] = useState('heart');
 
   return (
-    <div className="fixed inset-0 bg-red-700 text-white overflow-hidden z-50 flex items-center justify-center bg-noise">
+    <div className="fixed inset-0 bg-red-700 overflow-hidden z-50 flex items-center justify-center bg-noise">
       <AnimatePresence mode="wait">
         {(phase === 'heart' || phase === 'burst') && (
           <HeartDragScene key="heart-scene" phase={phase} onTrigger={() => setPhase('burst')} onBurstComplete={() => setPhase('tree')} />
@@ -26,37 +24,85 @@ export default function IntroExperience({
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
           >
-            <div className="w-full max-w-md h-[65vh] flex items-end justify-center px-4">
+            {/* Fallback Tree Backdrop */}
+            <div className="absolute inset-0 flex items-end justify-center pb-[10vh] opacity-80 mix-blend-screen pointer-events-none">
               <HeartTree phase={phase === 'tree' ? 'growing' : phase} onAnimationComplete={setPhase} />
             </div>
 
-            <div className="h-[25vh] w-full flex flex-col items-center justify-start pt-8 relative z-30">
-              <AnimatePresence>
-                {phase === 'message' && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1.5 }}
-                    className="text-center px-6"
-                  >
-                    <p className="text-xl md:text-2xl font-medium text-white italic mb-4">
-                      "{messageText}"
-                    </p>
-                    <div className="text-2xl mb-8">❤️</div>
-
-                    <motion.button 
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 1, duration: 0.5 }}
-                      onClick={onComplete}
-                      className="bg-white/50 backdrop-blur-md border border-peach/50 text-deep-burgundy px-8 py-4 rounded-full font-bold inline-flex items-center gap-2 shadow-lg shadow-peach/20 hover:scale-105 transition-transform"
-                    >
-                      {buttonText} <Sparkles size={18} className="text-gold" />
-                    </motion.button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+            {/* Falling petals effect using Framer Motion */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+              {Array.from({ length: 30 }).map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute bg-white/40 rounded-full blur-[1px]"
+                  style={{
+                    width: Math.random() * 8 + 4 + 'px',
+                    height: Math.random() * 8 + 4 + 'px',
+                    left: Math.random() * 100 + '%',
+                    top: -20
+                  }}
+                  animate={{
+                    y: ['0vh', '100vh'],
+                    x: [0, Math.random() * 100 - 50, Math.random() * 100 - 50],
+                    rotate: [0, Math.random() * 360],
+                    opacity: [0, Math.random() * 0.8 + 0.2, 0]
+                  }}
+                  transition={{
+                    duration: Math.random() * 10 + 5,
+                    repeat: Infinity,
+                    delay: Math.random() * 10,
+                    ease: 'linear'
+                  }}
+                />
+              ))}
             </div>
+
+            {/* Custom overlay mimicking the Blossom Tree layout */}
+            <div className="absolute left-[7%] bottom-[13%] max-w-[min(84%,440px)] z-20 pointer-events-none text-left flex flex-col items-start">
+              <motion.p 
+                className="om-bday-tree-eyebrow"
+                initial={{ opacity: 0, y: 12, filter: 'blur(5px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                transition={{ duration: 0.8, ease: 'easeOut', delay: 0.5 }}
+              >
+                it's officially your day
+              </motion.p>
+              
+              <div className="relative inline-block">
+                <motion.h1 
+                  className="om-bday-tree-hero animate-tree-hero"
+                >
+                  Happy Birthday
+                </motion.h1>
+              </div>
+              
+              <motion.span 
+                className="om-bday-tree-rule"
+                initial={{ opacity: 0, y: 12, scaleX: 0.3 }}
+                animate={{ opacity: 1, y: 0, scaleX: 1 }}
+                transition={{ duration: 0.9, delay: 1.35, ease: [0.2, 0.7, 0.2, 1] }}
+              ></motion.span>
+              
+              <motion.p 
+                className="om-bday-tree-sub"
+                initial={{ opacity: 0, y: 12, filter: 'blur(5px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                transition={{ duration: 0.8, delay: 1.55, ease: 'easeOut' }}
+              >
+                here's to a year that blooms
+              </motion.p>
+            </div>
+
+            {/* Tap to continue area */}
+            <motion.div 
+              className="absolute left-0 right-0 bottom-8 z-30 text-center om-bday-tree-tap cursor-pointer hover:opacity-100 transition-opacity pointer-events-auto"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.82 }}
+              transition={{ delay: 2.5, duration: 1 }}
+              onClick={onComplete}
+            >
+              tap anywhere to continue
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -82,27 +128,20 @@ function HeartDragScene({ phase, onTrigger, onBurstComplete }) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.8 }}
     >
-      {/* Target Heart */}
       <motion.div 
         className="relative z-10 text-[120px] mb-32 drop-shadow-2xl"
         animate={isBursting ? { scale: [1, 2, 5, 0], opacity: [1, 1, 0] } : { scale: [1, 1.05, 1] }}
         transition={isBursting ? { duration: 1 } : { repeat: Infinity, duration: 2, ease: "easeInOut" }}
       >
         ❤️
-        {/* Glow */}
         <div className="absolute inset-0 bg-red-400 rounded-full blur-3xl opacity-20 -z-10 animate-pulse"></div>
       </motion.div>
 
-      {/* Draggable Arrow Indicator */}
       {!isBursting && (
         <div className="absolute bottom-20 flex flex-col items-center">
           <p className="text-red-200 text-sm tracking-widest uppercase mb-4 opacity-70">Pull the arrow</p>
-          
-          {/* Drag constraints area */}
           <div className="h-48 w-16 relative flex justify-center items-end">
-            {/* The Track line */}
             <div className="absolute top-0 bottom-8 w-px bg-white/30 border-dashed border-l border-white/50"></div>
-            
             <motion.div
               drag="y"
               dragConstraints={{ top: -140, bottom: 0 }}
@@ -121,7 +160,6 @@ function HeartDragScene({ phase, onTrigger, onBurstComplete }) {
         </div>
       )}
 
-      {/* Burst Particles */}
       {isBursting && (
         <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
           {Array.from({ length: 20 }).map((_, i) => (

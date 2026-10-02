@@ -1,0 +1,67 @@
+.om-bday-tree-eyebrow {
+    font-family: "Outfit", Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(13px, 3.2vw, 22px);
+    letter-spacing: .05em;
+    color: #ffdce5;
+    text-shadow: 0 1px 2px #570014, 0 0 8px rgba(110,0,25,.95);
+}
+
+.om-bday-tree-hero {
+    font-family: "Shantell Sans", cursive;
+    font-weight: 700;
+    font-size: clamp(45px, 10vw, 75px);
+    line-height: 1.1;
+    margin: -.02em 0 .06em;
+    background: linear-gradient(180deg,#ffffff 0,#ffd1df 50%,#ff9ebf 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 1px 1px rgba(90, 0, 20, .98)) drop-shadow(0 2px 6px rgba(130, 18, 55, .45));
+    transform-origin: 8% 60%;
+}
+
+.om-bday-tree-rule {
+    display: block;
+    width: clamp(46px,13vw,110px);
+    height: 3px;
+    margin: .12em 0 .48em;
+    background: linear-gradient(90deg, #E39A2E, rgba(227,154,46,0));
+    box-shadow: 0 0 8px rgba(255,247,240,.9);
+    transform-origin: left center;
+}
+
+.om-bday-tree-sub {
+    font-family: "Outfit", Georgia, serif;
+    font-weight: 600;
+    font-style: italic;
+    font-size: clamp(13px, 3.2vw, 20px);
+    letter-spacing: .03em;
+    color: #ffb8c9;
+    text-shadow: 0 1px 2px #38000d, 0 0 8px rgba(70,0,15,.98);
+}
+
+.om-bday-tree-tap {
+    font-family: "Outfit", sans-serif;
+    font-size: 15px;
+    letter-spacing: .04em;
+    color: #ffb8c9;
+    text-shadow: 0 1px 2px rgba(90,0,20,.9);
+    opacity: 0.82;
+}
+
+@keyframes om-bday-tree-write {
+    from { clip-path: inset(0 100% -28% -10%); }
+    to { clip-path: inset(0 -10% -28% -10%); }
+}
+
+@keyframes om-bday-tree-breath {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+.animate-tree-hero {
+    animation: om-bday-tree-write 1.2s cubic-bezier(.62,.04,.24,1) forwards,
+               om-bday-tree-breath 4s ease-in-out 1.5s infinite;
+}
