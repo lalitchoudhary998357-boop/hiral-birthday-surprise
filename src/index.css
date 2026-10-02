@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+  --color-warm-cream: #FDFBF7;
+  --color-soft-pink: #FFD6E0;
+  --color-peach: #FFB5A7;
+  --color-gold: #F8C660;
+  --color-deep-burgundy: #5A2A3B;
+}
+
+body {
+  background-color: var(--color-warm-cream);
+  color: #1f2937;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom hide scrollbar but keep functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
