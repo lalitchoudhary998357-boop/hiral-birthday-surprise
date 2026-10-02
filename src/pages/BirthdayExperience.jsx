@@ -108,6 +108,56 @@ function SceneCake({ data, next }) {
 function SceneBalloons({ data, next }) {
   const [popped, setPopped] = useState([]);
   
+  const popBalloon = (index) => {
+    if (!popped.includes(index)) setPopped([...popped, index]);
+  };
+
+  const allPopped = popped.length === data.balloons.length;
+
+  return (
+    <motion.div className="w-full max-w-md" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      <div className="text-center mb-8">
+        <h2 className="text-3xl font-bold text-peach mb-2">Pop the balloons 🎈</h2>
+        <p className="text-white/70">Each one hides a reason you're loved</p>
+      </div>
+
+      <div className="space-y-4">
+        {data.balloons.map((msg, i) => (
+          <div key={i} className="relative min-h-[5rem] flex items-center justify-center py-2">
+            <AnimatePresence>
+              {!popped.includes(i) ? (
+                <motion.div 
+                  exit={{ opacity: 0, scale: 1.5 }}
+                  onClick={() => popBalloon(i)}
+                  className="absolute cursor-pointer text-5xl hover:scale-110 transition-transform"
+                >
+                  🎈
+                </motion.div>
+              ) : (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                  className="w-full bg-white/10 border border-peach/30 p-4 rounded-xl text-center backdrop-blur-md"
+                >
+                  <p className="text-lg font-medium text-warm-cream">{msg}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        ))}
+      </div>
+
+      {allPopped && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-12 text-center">
+          <p className="mb-6 text-soft-pink italic">...and a thousand more reasons ✨</p>
+          <button onClick={next} className="bg-white text-deep-burgundy px-8 py-3 rounded-full font-bold inline-flex items-center gap-2">
+            Keep going <ArrowRight size={18} />
+          </button>
+        </motion.div>
+      )}
+    </motion.div>
+  );
+}
+
 function SceneMemories({ data, next }) {
   const [fullScreenIndex, setFullScreenIndex] = useState(0);
 
@@ -126,7 +176,7 @@ function SceneMemories({ data, next }) {
     const mem = data.memories[fullScreenIndex];
     return (
       <motion.div 
-        key={s-${fullScreenIndex}}
+        key={String('fs-') + fullScreenIndex}
         className="fixed inset-0 z-[100] bg-black/95 flex flex-col items-center justify-center p-6 cursor-pointer"
         initial={{ opacity: 0, scale: 0.95 }} 
         animate={{ opacity: 1, scale: 1 }} 
@@ -145,7 +195,6 @@ function SceneMemories({ data, next }) {
     );
   }
 
-  // Pre-defined rotations for that scattered "polaroid on a desk" look
   const rotations = ['-rotate-3', 'rotate-2', '-rotate-6', 'rotate-6', '-rotate-1', 'rotate-3'];
 
   return (
@@ -154,76 +203,22 @@ function SceneMemories({ data, next }) {
       <p className="text-white/70 mb-8">Some beautiful moments together ✨</p>
       
       <div className="flex flex-wrap justify-center items-center gap-4 md:gap-8 pb-12 px-2">
-        {data.memories.map((mem, i) => (
+        {data.memories.map((mem, i) => {
+          const r = rotations[i % rotations.length];
+          return (
           <motion.div 
             key={i} 
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ delay: i * 0.15 }}
-            className={w-36 md:w-48 bg-white p-2 md:p-3 pb-6 md:pb-8 rounded shadow-xl hover:scale-110 hover:z-20 transition-all cursor-pointer relative z-10 transform }
+            className={"w-36 md:w-48 bg-white p-2 md:p-3 pb-6 md:pb-8 rounded shadow-xl hover:scale-110 hover:z-20 transition-all cursor-pointer relative z-10 transform " + r}
           >
             <div className="aspect-square bg-gray-100 rounded-sm overflow-hidden border border-gray-100">
               <img src={mem.image_url} alt="Memory" className="w-full h-full object-cover" />
             </div>
             {mem.caption && <p className="text-deep-burgundy font-medium mt-3 text-sm md:text-base hand-drawn-font">{mem.caption}</p>}
           </motion.div>
-        ))}
-      </div>
-
-      <button onClick={next} className="bg-white text-deep-burgundy px-8 py-3 rounded-full font-bold inline-flex items-center gap-2 relative z-30 shadow-lg hover:scale-105 transition-transform">
-        Keep going <ArrowRight size={18} />
-      </button>
-    </motion.div>
-  );
-}
-        ))}
-      </div>
-
-      {allPopped && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-12 text-center">
-          <p className="mb-6 text-soft-pink italic">...and a thousand more reasons 💛</p>
-          <button onClick={next} className="bg-white text-deep-burgundy px-8 py-3 rounded-full font-bold inline-flex items-center gap-2">
-            Keep going <ArrowRight size={18} />
-          </button>
-        </motion.div>
-      )}
-    </motion.div>
-  );
-}
-
-function SceneMemories({ data, next }) {
-  if (!data.memories || data.memories.length === 0) {
-    return (
-      <div className="text-center">
-        <p className="mb-6 text-xl">No photos this time, but lots of love! ❤️</p>
-        <button onClick={next} className="bg-white text-deep-burgundy px-8 py-3 rounded-full font-bold">Next</button>
-      </div>
-    );
-  }
-
-  // Pre-defined rotations for that scattered "polaroid on a desk" look
-  const rotations = ['-rotate-3', 'rotate-2', '-rotate-6', 'rotate-6', '-rotate-1', 'rotate-3'];
-
-  return (
-    <motion.div className="w-full text-center max-w-4xl mx-auto" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, x: -100 }}>
-      <h2 className="text-3xl font-bold text-peach mb-2">Memory Lane</h2>
-      <p className="text-white/70 mb-8">Some beautiful moments together ✨</p>
-      
-      <div className="flex flex-wrap justify-center items-center gap-4 md:gap-8 pb-12 px-2">
-        {data.memories.map((mem, i) => (
-          <motion.div 
-            key={i} 
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ delay: i * 0.15 }}
-            className={`w-36 md:w-48 bg-white p-2 md:p-3 pb-6 md:pb-8 rounded shadow-xl hover:scale-110 hover:z-20 transition-all cursor-pointer relative z-10 transform ${rotations[i % rotations.length]}`}
-          >
-            <div className="aspect-square bg-gray-100 rounded-sm overflow-hidden border border-gray-100">
-              <img src={mem.image_url} alt="Memory" className="w-full h-full object-cover" />
-            </div>
-            {mem.caption && <p className="text-deep-burgundy font-medium mt-3 text-sm md:text-base hand-drawn-font">{mem.caption}</p>}
-          </motion.div>
-        ))}
+        )})}
       </div>
 
       <button onClick={next} className="bg-white text-deep-burgundy px-8 py-3 rounded-full font-bold inline-flex items-center gap-2 relative z-30 shadow-lg hover:scale-105 transition-transform">
@@ -251,7 +246,6 @@ function SceneLetter({ data, next }) {
           animate={{ opacity: 1, scale: 1 }} 
           className="relative text-left p-8 md:p-12 mx-auto"
         >
-          {/* Burnt Paper Background Effect */}
           <div className="absolute inset-0 bg-[#e8dcc4] bg-noise rounded-sm shadow-[inset_0_0_60px_rgba(101,67,33,0.8),inset_0_0_20px_rgba(0,0,0,0.6),5px_10px_20px_rgba(0,0,0,0.5)] -z-10 transform -rotate-1"></div>
           
           <div className="font-serif text-[#3e2723] relative z-10">
@@ -277,14 +271,14 @@ function SceneFinal({ data }) {
       <h1 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gold to-peach mb-4">
         HAPPY BIRTHDAY<br/>{data.recipientName}
       </h1>
-      <p className="text-xl text-soft-pink mb-12">Hope you loved your surprise! 💛</p>
+      <p className="text-xl text-soft-pink mb-12">Hope you loved your surprise! ✨</p>
       
       <div className="flex flex-col gap-4 max-w-xs mx-auto">
         <button onClick={() => window.location.reload()} className="bg-white/10 border border-white/20 text-white py-3 rounded-full font-medium hover:bg-white/20 transition-all">
           Replay the surprise ✨
         </button>
         <button onClick={() => window.location.href = '/'} className="bg-white text-deep-burgundy py-3 rounded-full font-bold shadow-lg hover:scale-105 transition-transform">
-          Create your own 🎂
+          Create your own 🎁
         </button>
       </div>
     </motion.div>
