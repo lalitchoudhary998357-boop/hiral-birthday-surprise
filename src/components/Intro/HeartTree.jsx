@@ -18,21 +18,28 @@ export default function HeartTree({ phase, onAnimationComplete }) {
     ];
 
     // 2. Canopy Clusters (cx, cy, radius)
-    // Designed to form a broad, rounded top that tapers toward the bottom
+    // Designed to form a STRICT dense heart shape
     const clusters = [
-      { cx: 400, cy: 200, r: 160 }, // Top center
-      { cx: 280, cy: 250, r: 140 }, // Top left
-      { cx: 520, cy: 250, r: 140 }, // Top right
-      { cx: 180, cy: 380, r: 130 }, // Mid far left
-      { cx: 620, cy: 380, r: 130 }, // Mid far right
-      { cx: 300, cy: 400, r: 140 }, // Mid inner left
-      { cx: 500, cy: 400, r: 140 }, // Mid inner right
-      { cx: 400, cy: 350, r: 160 }, // Core center
-      { cx: 400, cy: 520, r: 130 }, // Lower center
-      { cx: 300, cy: 520, r: 110 }, // Lower left
-      { cx: 500, cy: 520, r: 110 }, // Lower right
-      { cx: 350, cy: 600, r: 80 },  // Bottom taper left
-      { cx: 450, cy: 600, r: 80 },  // Bottom taper right
+      // Left Lobe
+      { cx: 280, cy: 260, r: 130 },
+      { cx: 220, cy: 320, r: 110 },
+      { cx: 320, cy: 320, r: 120 },
+      
+      // Right Lobe
+      { cx: 520, cy: 260, r: 130 },
+      { cx: 580, cy: 320, r: 110 },
+      { cx: 480, cy: 320, r: 120 },
+      
+      // Mid Section
+      { cx: 400, cy: 350, r: 100 },
+      { cx: 300, cy: 420, r: 120 },
+      { cx: 500, cy: 420, r: 120 },
+      
+      // Lower Taper
+      { cx: 360, cy: 520, r: 100 },
+      { cx: 440, cy: 520, r: 100 },
+      { cx: 400, cy: 600, r: 80 },
+      { cx: 400, cy: 660, r: 60 },
     ];
 
     const colors = [
@@ -55,7 +62,7 @@ export default function HeartTree({ phase, onAnimationComplete }) {
 
     // Responsive leaf count: more on desktop, fewer on mobile
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-    const targetLeaves = isMobile ? 350 : 650;
+    const targetLeaves = isMobile ? 600 : 1200;
     const leavesPerCluster = Math.floor(targetLeaves / clusters.length);
 
     const generatedLeaves = [];
@@ -179,20 +186,8 @@ export default function HeartTree({ phase, onAnimationComplete }) {
           </g>
         </defs>
 
-        {/* TRUNK & BRANCHES */}
-        <g stroke="#3E2723" strokeLinecap="round">
-          {branches.map((b, i) => (
-            <motion.path 
-              key={`branch-${i}`} 
-              d={b} 
-              fill="transparent" 
-              strokeWidth={12 - i}
-              custom={i}
-              variants={branchVariants}
-              initial="hidden"
-              animate={phase !== 'hidden' ? "visible" : "hidden"}
-            />
-          ))}
+        {/* TRUNK */}
+        <g strokeLinecap="round">
           <motion.path 
             d={trunkPath} 
             fill="#3E2723" 
