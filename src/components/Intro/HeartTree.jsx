@@ -70,9 +70,8 @@ export default function HeartTree({ phase, onAnimationComplete }) {
         const x = cluster.cx + radius * Math.cos(angle);
         const y = cluster.cy + radius * Math.sin(angle);
 
-        // Size: significantly larger hearts per user request. Base SVG is 20x20.
-        // Using sizes from 32px up to 60px.
-        const sizePx = 32 + Math.random() * 28; 
+        // Size: smaller, dense hearts to form a cohesive shape
+        const sizePx = 14 + Math.random() * 14; 
         const scale = sizePx / 20;
 
         // Rotation: -15deg to +15deg
