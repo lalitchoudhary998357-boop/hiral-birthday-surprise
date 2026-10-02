@@ -145,7 +145,7 @@ export default function HeartTree({ phase, onAnimationComplete }) {
   };
 
   return (
-    <div className="relative w-full max-w-2xl aspect-[4/5] mx-auto">
+    <div className="relative h-[70vh] sm:h-[85vh] w-auto aspect-[4/5] mx-auto">
       <svg viewBox="0 0 800 1000" className="w-full h-full drop-shadow-2xl overflow-visible">
         {/* DEFINITIONS FOR GLOSSY HEARTS */}
         <defs>
